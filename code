@@ -1,0 +1,109 @@
+// Declaração dos pinos
+const int pinoLEDR = 11;
+const int pinoLEDG = 10;
+const int pinoLEDB = 9;
+const int pinoBotaoR = 7;
+const int pinoBotaoG = 6;
+const int pinoBotaoB = 5;
+const int leitBotaoR = 4;
+const int leitBotaoG = 2;
+const int leitBotaoB = 3;
+
+int azul = 255; 
+int vermelho = 255; 
+int verde = 255;
+
+// Variáveis para armazenar o estado de cada botão
+int leituraBotaoR;
+int leituraBotaoG;
+int leituraBotaoB;
+int l1;
+int l2;
+int l3;
+const int pinoPotenciometro = A0;
+
+
+void setup() {
+  // Configura os pinos
+  pinMode(pinoLEDR,OUTPUT);
+  pinMode(pinoLEDG,OUTPUT);
+  pinMode(pinoLEDB,OUTPUT);
+  pinMode(pinoBotaoR,INPUT_PULLUP);
+  pinMode(pinoBotaoG,INPUT_PULLUP);
+  pinMode(pinoBotaoB,INPUT_PULLUP);
+  pinMode(leitBotaoR,INPUT_PULLUP);
+  pinMode(leitBotaoG,INPUT_PULLUP);
+  pinMode(leitBotaoB,INPUT_PULLUP);
+  pinMode(pinoPotenciometro, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // le estado dos botões
+  leituraBotaoR = digitalRead(pinoBotaoR);
+  leituraBotaoG = digitalRead(pinoBotaoG);
+  leituraBotaoB = digitalRead(pinoBotaoB);
+
+  l1 = digitalRead(leitBotaoR);
+  l2 = digitalRead(leitBotaoG);
+  l3 = digitalRead(leitBotaoB);
+    
+
+ if(l1 == LOW) { // verifica se o botão foi pressionado
+     // aciona a cor com brilho máximo
+    vermelho = analogRead(pinoPotenciometro);
+    vermelho = map(vermelho,0,1023,0,255);
+    Serial.print("Azul: ");
+    Serial.println(vermelho);
+    analogWrite(pinoLEDR, vermelho);
+  } else if(l1 == HIGH && leituraBotaoR ==HIGH) { // senão
+    analogWrite(pinoLEDR, 0); // apaga o LED
+  }
+
+ if(l2 == LOW) { // verifica se o botão foi pressionado
+     // aciona a cor com brilho máximo
+    verde = analogRead(pinoPotenciometro);
+    verde = map(verde,0,1023,0,255);
+    Serial.print("Verde: ");
+    Serial.println(verde);
+    analogWrite(pinoLEDG, verde);
+  } else if(l2==HIGH && leituraBotaoG == HIGH){ // senão
+    analogWrite(pinoLEDG, 0); // apaga o LED
+  }
+
+
+ if(l3 == LOW) { // verifica se o botão foi pressionado
+    // aciona a cor com brilho máximo
+    azul = analogRead(pinoPotenciometro);
+    azul = map(azul,0,1023,0,255);
+    Serial.print("Vermelho: ");
+    Serial.println(azul);
+    analogWrite(pinoLEDB, azul);
+  } else if(l3==HIGH && leituraBotaoB == HIGH) { // senão
+    analogWrite(pinoLEDB, 0); // apaga o LED
+  }
+  
+  
+  if(leituraBotaoR == LOW) { // verifica se o botão foi pressionado
+    analogWrite(pinoLEDR, vermelho); // aciona a cor com brilho máximo
+    Serial.println(vermelho);
+  } else if(leituraBotaoR == HIGH && l1 == HIGH) { // senão
+    analogWrite(pinoLEDR, 0); // apaga o LED
+  }
+  
+  if(leituraBotaoG == LOW) {  // verifica se o botão foi pressionado
+    analogWrite(pinoLEDG, verde); // aciona a cor com brilho máximo
+     Serial.println(verde);
+  } else if(l2==HIGH && leituraBotaoG == HIGH){ // senão
+    analogWrite(pinoLEDG, 0); // apaga o LED
+  }
+  
+  if(leituraBotaoB == LOW) {  // verifica se o botão foi pressionado
+    analogWrite(pinoLEDB, azul); // aciona a cor com brilho máximo
+     Serial.println(azul);
+  } else if(l3==HIGH && leituraBotaoB == HIGH){ // senão
+    analogWrite(pinoLEDB, 0); // apaga o LED
+  }
+  
+  delay(100); // aguarda 100 milissegundos para uma nova leitura
+}
